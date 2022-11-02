@@ -2,4 +2,7 @@
     <string name="app_name">My Application</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="date">date:</string>
+    <string name="days_after">Days After</string>
+    <string name="days_until">Days Until</string>
 </resources>
