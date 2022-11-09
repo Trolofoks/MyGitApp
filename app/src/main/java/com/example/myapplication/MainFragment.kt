@@ -27,6 +27,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+
     companion object {
 
         @JvmStatic

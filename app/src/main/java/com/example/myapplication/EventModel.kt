@@ -5,4 +5,4 @@ data class EventModel(
     val dataOfEvent: String,
     val eventDescription: String,
     val Color: String
-)
+) : java.io.Serializable
