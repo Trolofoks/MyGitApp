@@ -3,10 +3,13 @@ package com.example.myapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private var launcher: ActivityResultLauncher<Intent>? = null
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,5 +30,8 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+
+        }
     }
 }

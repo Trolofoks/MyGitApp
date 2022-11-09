@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/editTextNameEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <DatePicker
-            android:id="@+id/datePicker1"
+            android:id="@+id/datePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:calendarViewShown="false"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
         <EditText
-            android:id="@+id/editTextTextMultiLine"
+            android:id="@+id/editTextDescriptionEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
