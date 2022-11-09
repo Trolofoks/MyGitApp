@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode == RESULT_OK){
+                val result = it.data?.getSerializableExtra("Key") as EventModel
+
+            }
 
         }
     }
