@@ -1,6 +1,6 @@
 package com.example.myapplication
 
-import android.location.GnssAntennaInfo.Listener
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ListItemBinding
-import java.util.Date
 
 class EventAdapter(val listener: Listener, val currentData: String) : ListAdapter<EventModel, EventAdapter.Holder>(Comparator()) {
+
+    val eventModelList = ArrayList<EventModel>()
 
     class Holder(view: View, val listener: Listener) : RecyclerView.ViewHolder(view){
 
@@ -20,22 +21,31 @@ class EventAdapter(val listener: Listener, val currentData: String) : ListAdapte
         fun bind(item: EventModel, currentData : String) = with(binding) {
             val howMuchDays = dateToDays(item.dataOfEvent) - dateToDays(currentData)
             textCurrentData.text = item.dataOfEvent
-            textName.text = item.eventType
+            textName.text = correctName(item.eventType)
             textAfterOrUntil.text = afterOrUntil(howMuchDays)
             textDays.text = minusDesolator(howMuchDays).toString()
             cardBackgroundColor.setCardBackgroundColor(item.Color)
+
             itemView.setOnClickListener {
-                listener.onClick(layoutPosition)
+                listener.onClick(adapterPosition)
             }
         }
+
+        private fun correctName(name: String): String{
+            if (name.length > 40){
+                return name.substring(0, 35) + "..."
+            } else
+                return name
+        }
+
         fun minusDesolator(Date: Int): Int{
-            return if (Date > 0) {
+            return if (Date < 0) {
                 0 - Date
             } else {
                 Date
             }
         }
-        fun afterOrUntil(Date: Int): String{
+        private fun afterOrUntil(Date: Int): String{
             return if (Date > 0){
                 "Days_Until"
             } else {
@@ -43,11 +53,12 @@ class EventAdapter(val listener: Listener, val currentData: String) : ListAdapte
             }
 
         }
-        fun dateToDays(data: String): Int {
-            val day = data.substring(0, 1).toInt()
-            val month = data.substring(3, 4).toInt()
-            val year = data.substring(6, 7).toInt()
-            return year * 365 + month * 30 + day
+        private fun dateToDays(data: String): Int {
+            //ОБОЖЕ Я ЛЮБЛЮ split
+            val dataParts = data.split(".").toTypedArray()
+            return (dataParts[2].toInt() * 365) + (dataParts[1].toInt() * 30) + (dataParts[0].toInt())
+
+
         }
     }
 
@@ -68,7 +79,16 @@ class EventAdapter(val listener: Listener, val currentData: String) : ListAdapte
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(getItem(position), currentData)
+        holder.bind(eventModelList[position], currentData)
+    }
+
+    override fun getItemCount(): Int {
+        return eventModelList.size
+    }
+
+    fun addEvent(eventList: EventModel){
+        eventModelList.add(eventList)
+        notifyDataSetChanged()
     }
 
     interface Listener{
