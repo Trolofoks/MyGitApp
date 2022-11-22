@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
@@ -19,11 +18,11 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 class MainActivity : AppCompatActivity(), EventAdapter.Listener {
 
-    private var launcher: ActivityResultLauncher<Intent>? = null
+    private var launcherAdd: ActivityResultLauncher<Intent>? = null
+    private var launcherEdit: ActivityResultLauncher<Intent>? = null
     lateinit var binding: ActivityMainBinding
     //получить дату
     var currentDate: Date = Date()
@@ -32,8 +31,9 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
     //дата отфармотированная
     var dateText: String = dateFormat.format(currentDate)
     lateinit var adapter: EventAdapter
-    var eventsArrayList = arrayListOf<EventModel>()
-    lateinit var sharedPreferences: SharedPreferences
+    private var eventsArrayList = arrayListOf<EventModel>()
+    private lateinit var sharedPreferences: SharedPreferences
+    private var delMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
     }
 
     private fun initLaunch(){
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        launcherAdd = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if (it.resultCode == RESULT_OK){
                 //чтобы на старых версиях работало
                 val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -66,6 +66,18 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
                 adapter.addEvent(item)
             }
         }
+        launcherEdit = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode == RESULT_OK){
+                val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.data?.getSerializableExtra("Key", EventModel::class.java)!!
+                } else {
+                    it.data?.getSerializableExtra("Key")!! as EventModel
+                }
+                val position = it.data?.getIntExtra(Constance.EDIT_POSITION, 0)
+                eventsArrayList[position!!] = item
+                adapter.addArrayListOfEvent(eventsArrayList)
+            }
+        }
     }
 
     private fun init(){
@@ -76,17 +88,16 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId){
                 R.id.delete -> {
-                    Toast.makeText(this, "$dateText", Toast.LENGTH_SHORT).show()
+                    deletingMode()
                 }
                 R.id.add -> {
-                    launcher?.launch(Intent(this,AddActivity::class.java))
+                    launcherAdd?.launch(Intent(this,AddActivity::class.java))
                 }
             }
             true
         }
-        for (i in eventsArrayList){
-            adapter.addEvent(i)
-        }
+
+        adapter.addArrayListOfEvent(eventsArrayList)
     }
 
     private fun eventSharedPrefOutput() {
@@ -96,8 +107,6 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
         if (json != null){
             eventsArrayList = gson.fromJson<Any>(json, type) as ArrayList<EventModel>
         }
-
-
 
     }
 
@@ -109,9 +118,28 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
         editor.apply()
     }
 
+    private fun deletingMode(){
+        delMode = !delMode
+        if (delMode){
+            binding.recyclerView.setBackgroundColor(getColor(R.color.red))
+        } else {
+            binding.recyclerView.setBackgroundColor(getColor(R.color.clear))
+        }
+    }
+
 
 
     override fun onClick(position: Int) {
-        Toast.makeText(this, "$position", Toast.LENGTH_SHORT).show()
+        if (!delMode){
+            Toast.makeText(this, "$position", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AddActivity::class.java)
+            intent.putExtra(Constance.EDIT_INFO, eventsArrayList[position])
+            intent.putExtra(Constance.EDIT_POSITION, position)
+            launcherEdit?.launch(intent)
+        } else {
+            eventsArrayList.remove(eventsArrayList[position])
+            adapter.addArrayListOfEvent(eventsArrayList)
+        }
+
     }
 }

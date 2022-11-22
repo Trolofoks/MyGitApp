@@ -86,8 +86,14 @@ class EventAdapter(val listener: Listener, val currentData: String) : ListAdapte
         return eventModelList.size
     }
 
-    fun addEvent(eventList: EventModel){
-        eventModelList.add(eventList)
+    fun addEvent(event: EventModel){
+        eventModelList.add(event)
+        notifyDataSetChanged()
+    }
+
+    fun addArrayListOfEvent(eventArrayList: ArrayList<EventModel>){
+        eventModelList.clear()
+        eventModelList.addAll(eventArrayList)
         notifyDataSetChanged()
     }
 
