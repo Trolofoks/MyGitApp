@@ -16,5 +16,12 @@
         android:icon="@drawable/ic_plus"
         app:showAsAction="always"
         />
+    <item
+        android:id="@+id/favorite"
+        android:title="@string/favorite"
+        android:orderInCategory="0"
+        android:icon="@drawable/ic_star"
+        app:showAsAction="always"
+        />
 
 </menu>

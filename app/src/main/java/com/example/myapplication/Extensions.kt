@@ -5,11 +5,24 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import java.io.Serializable
 
-class Extensions : AppCompatActivity() {
-    fun <T : Serializable?> Intent.getSerializable(key: String, m_class: Class<T>): T {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            this.getSerializableExtra(key, m_class)!!
-        else
-            this.getSerializableExtra(key) as T
+fun AppCompatActivity.dateToDays(data: String): Int {
+    //ОБОЖЕ Я ЛЮБЛЮ split
+    val dataParts = data.split(".").toTypedArray()
+    return (dataParts[2].toInt() * 365) + (dataParts[1].toInt() * 30) + (dataParts[0].toInt())
+}
+
+fun AppCompatActivity.afterOrUntil(Date: Int): String{
+    return if (Date > 0){
+        "Days_Until"
+    } else {
+        "Days_After"
     }
 }
+fun AppCompatActivity.minusDesolator(Date: Int): Int{
+    return if (Date < 0) {
+        0 - Date
+    } else {
+        Date
+    }
+}
+

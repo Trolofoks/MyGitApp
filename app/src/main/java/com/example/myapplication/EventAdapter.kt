@@ -38,7 +38,7 @@ class EventAdapter(val listener: Listener, val currentData: String) : ListAdapte
                 return name
         }
 
-        fun minusDesolator(Date: Int): Int{
+        private fun minusDesolator(Date: Int): Int{
             return if (Date < 0) {
                 0 - Date
             } else {
@@ -57,8 +57,6 @@ class EventAdapter(val listener: Listener, val currentData: String) : ListAdapte
             //ОБОЖЕ Я ЛЮБЛЮ split
             val dataParts = data.split(".").toTypedArray()
             return (dataParts[2].toInt() * 365) + (dataParts[1].toInt() * 30) + (dataParts[0].toInt())
-
-
         }
     }
 
