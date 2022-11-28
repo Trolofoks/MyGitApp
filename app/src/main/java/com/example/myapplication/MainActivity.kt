@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
     private var eventsArrayList = arrayListOf<EventModel>()
     private lateinit var sharedPreferences: SharedPreferences
     private var delMode = false
-    private var favMode = false
+    private var favMode = true
     var currentEventModel: EventModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +43,14 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        adapter = EventAdapter(this, currentDataText)
         eventSharedPrefOutput()
-        initLaunch()
-        init()
         if (currentEventModel != null){
             selectMainEvent(currentEventModel!!, true)
         }
+        initLaunch()
+        init()
+
     }
 
     override fun onStop() {
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity(), EventAdapter.Listener {
 
     private fun init(){
 
-        adapter = EventAdapter(this, currentDataText)
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
         binding.toolbar.setOnMenuItemClickListener {

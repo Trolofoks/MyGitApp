@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.MyApplication.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:theme="@style/Theme.MyApplication.AppWidgetContainer">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_widget_inner_view_background"
+        android:foregroundGravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textDaysWidget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="1234"
+                android:textColor="#E1F5FE"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:autoSizeMinTextSize="14dp" />
+
+            <TextView
+                android:id="@+id/textAfterOrUntilWidget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Days Until"
+                android:textColor="#E1F5FE"
+                android:textSize="20sp"
+                app:autoSizeMinTextSize="10dp" />
+
+            <TextView
+                android:id="@+id/textNameEventWidget"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0"
+                android:textColor="#E1F5FE"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:autoSizeMinTextSize="10dp" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.appwidget.AppWidgetProvider
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -25,4 +26,7 @@ fun AppCompatActivity.minusDesolator(Date: Int): Int{
         Date
     }
 }
+
+
+
 
